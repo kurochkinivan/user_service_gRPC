@@ -22,7 +22,7 @@ func New(log *slog.Logger, userUpdator UserUpdator) *User {
 }
 
 type UserUpdator interface {
-	Update(ctx context.Context, userID string, user *entity.User) error
+	UpdateProfile(ctx context.Context, userID string, user *entity.User) (*entity.User, error)
 }
 
 func (u *User) UpdateProfile(ctx context.Context, userID string, user *entity.User) (*entity.User, error) {
@@ -34,11 +34,11 @@ func (u *User) UpdateProfile(ctx context.Context, userID string, user *entity.Us
 
 	log.Info("updating user")
 
-	err := u.userUpdator.Update(ctx, userID, user)
+	user, err := u.userUpdator.UpdateProfile(ctx, userID, user)
 	if err != nil {
 		log.Warn("failed to update user", sl.Err(err))
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
 
-	return nil, nil
+	return user, nil
 }

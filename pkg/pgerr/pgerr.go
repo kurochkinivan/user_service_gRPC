@@ -35,6 +35,7 @@ func ErrCreateTx(op string, err error) error {
 func ErrInsertMultipleRows(op string, err error) error {
 	return errors.Wrap(ParsePgErr(err), fmt.Sprint(op, ": failed to insert multiple rows"))
 }
+
 func ErrCommit(op string, err error) error {
 	return errors.Wrap(ParsePgErr(err), fmt.Sprint(op, ": failed to commit transaction"))
 }

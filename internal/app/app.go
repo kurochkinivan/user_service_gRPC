@@ -8,7 +8,7 @@ import (
 	grpcapp "github.com/kurochkinivan/user_service/internal/app/grpc"
 	pgapp "github.com/kurochkinivan/user_service/internal/app/pg"
 	"github.com/kurochkinivan/user_service/internal/config"
-	"github.com/kurochkinivan/user_service/internal/usecase/repository/pg"
+	"github.com/kurochkinivan/user_service/internal/usecase/storage/pg"
 	"github.com/kurochkinivan/user_service/internal/usecase/user"
 )
 

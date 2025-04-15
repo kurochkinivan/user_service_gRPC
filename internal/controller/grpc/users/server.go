@@ -33,23 +33,51 @@ func (s *serverAPI) UpdateProfile(ctx context.Context, req *userv1.UpdateProfile
 		return nil, err
 	}
 
-	_, err := s.user.UpdateProfile(ctx, req.GetUserId(), &entity.User{
+	user, err := s.user.UpdateProfile(ctx, req.GetUserId(), &entity.User{
 		Name:      req.GetName(),
 		Age:       req.GetAge(),
 		Gender:    req.GetGender(),
 		About:     req.GetAbout(),
-		Interests: mapInterests(req.GetInterestsId()),
+		Interests: mapReqInterests(req.GetInterestsId()),
 	})
 	if err != nil {
 		return nil, err
 	}
 
-	return &userv1.UpdateProfileResponse{
-		Profile: nil,
-	}, nil
+	return &userv1.UpdateProfileResponse{Profile: &userv1.UserProfile{
+		UserId:      user.ID,
+		Name:        user.Name,
+		Age:         user.Age,
+		Gender:      user.Gender,
+		Description: user.About,
+		Photos:      mapPhotosToResp(user.Photos),
+		Interests:   mapInterestsToResp(user.Interests),
+	}}, nil
 }
 
-func mapInterests(ids []int64) []*entity.Interest {
+func mapPhotosToResp(photos []*entity.Photo) []*userv1.Photo {
+	result := make([]*userv1.Photo, len(photos))
+	for i, p := range photos {
+		result[i] = &userv1.Photo{
+			PhotoId:  p.ID,
+			PhotoUrl: p.Url,
+		}
+	}
+	return result
+}
+
+func mapInterestsToResp(interests []*entity.Interest) []*userv1.Interest {
+	result := make([]*userv1.Interest, len(interests))
+	for i, interest := range interests {
+		result[i] = &userv1.Interest{
+			InterestId: interest.ID,
+			Name:       interest.Name,
+		}
+	}
+	return result
+}
+
+func mapReqInterests(ids []int64) []*entity.Interest {
 	var result []*entity.Interest
 	for _, id := range ids {
 		result = append(result, &entity.Interest{ID: id})

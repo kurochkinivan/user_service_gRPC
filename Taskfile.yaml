@@ -41,4 +41,4 @@ tasks:
       - run_test_migrations
     desc: "run test migrations"
     cmds:
-      - go run cmd/migrator/main.go --migration_path=tests/migrations --migration_table=migrations_test --username=postgres --password=postgres --host=localhost --port=5433 --db=users
+      - go run cmd/migrator/main.go --migration_path=tests/migrations --migration_table=test_migrations --username=postgres --password=postgres --host=localhost --port=5433 --db=users

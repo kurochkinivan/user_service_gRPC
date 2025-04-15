@@ -1,0 +1,2 @@
+ALTER TABLE users 
+    ALTER COLUMN about TEXT NOT NULL; 

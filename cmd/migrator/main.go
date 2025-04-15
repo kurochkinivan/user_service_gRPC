@@ -124,6 +124,6 @@ func buildDatabaseURL(f *Flags) string {
 		User:     url.UserPassword(f.Username, f.Password),
 		Host:     net.JoinHostPort(f.Host, f.Port),
 		Path:     f.DB,
-		RawQuery: "sslmode=disable",
+		RawQuery: "sslmode=disable&x-migrations-table=" + f.MigrationsTable,
 	}).String()
 }

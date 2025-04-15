@@ -1,0 +1,44 @@
+version: '3'
+
+tasks:
+  users:
+    aliases:
+      - run_users
+    desc: "start users service gRPC server"
+    cmds:
+      - go run cmd/users/main.go --config=./config/local.yaml
+  
+  docker_up:
+    aliases:
+      - dk_up
+    desc: "create docker container"
+    cmds:
+      - docker compose up -d
+
+  docker_down:
+    aliases:
+      - dk_down
+    desc: "remove docker container"
+    cmds:
+      - docker compose down
+
+  migrate_up:
+    aliases:
+      - m_up
+    desc: "migrate up"
+    cmds:
+      - go run cmd/migrator/main.go --type=up --migration_path=migrations --migration_table=migrations --username=postgres --password=postgres --host=localhost --port=5433 --db=users
+  
+  migrate_down:
+    aliases:
+      - m_down
+    desc: "migrate down"
+    cmds:
+      - go run cmd/migrator/main.go --type=down --migration_path=migrations --migration_table=migrations --username=postgres --password=postgres --host=localhost --port=5433 --db=users
+
+  migrate_test:
+    aliases:
+      - run_test_migrations
+    desc: "run test migrations"
+    cmds:
+      - go run cmd/migrator/main.go --migration_path=tests/migrations --migration_table=migrations_test --username=postgres --password=postgres --host=localhost --port=5433 --db=users
